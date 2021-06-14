@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>D:\learning\c++ program\SoftwareRender\Debug\SoftwareRender.exe</FullPath>
+      <FullPath>D:\learning\c++ program\myRenderer\Debug\SoftwareRender.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

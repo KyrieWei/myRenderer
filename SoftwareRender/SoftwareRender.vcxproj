@@ -86,7 +86,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -139,18 +139,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="FrameBuffer.cpp" />
+    <ClCompile Include="gui\Image.cpp" />
+    <ClCompile Include="gui\Window.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="maths\Common.cpp" />
     <ClCompile Include="maths\vec2.cpp" />
     <ClCompile Include="maths\vec3.cpp" />
     <ClCompile Include="maths\vec4.cpp" />
+    <ClCompile Include="pipelines\FrameBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FrameBuffer.h" />
+    <ClInclude Include="gui\Image.h" />
+    <ClInclude Include="gui\Window.h" />
+    <ClInclude Include="maths\Common.h" />
     <ClInclude Include="maths\vec2.h" />
     <ClInclude Include="maths\vec3.h" />
     <ClInclude Include="maths\vec4.h" />
-    <ClInclude Include="stb_image_write.h" />
+    <ClInclude Include="pipelines\FrameBuffer.h" />
+    <ClInclude Include="tools\macro.h" />
+    <ClInclude Include="tools\stb_image_write.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

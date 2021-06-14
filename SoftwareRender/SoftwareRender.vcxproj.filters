@@ -18,9 +18,6 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FrameBuffer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="maths\vec3.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -30,14 +27,20 @@
     <ClCompile Include="maths\vec2.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="maths\Common.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\Window.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\Image.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="pipelines\FrameBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FrameBuffer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="stb_image_write.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="maths\vec3.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -45,6 +48,24 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="maths\vec2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="maths\Common.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\Window.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\Image.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\macro.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\stb_image_write.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="pipelines\FrameBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

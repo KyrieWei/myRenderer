@@ -1,10 +1,2 @@
-﻿  FrameBuffer.cpp
-D:\learning\c++ program\SoftwareRender\SoftwareRender\FrameBuffer.cpp(110,17): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
-D:\learning\c++ program\SoftwareRender\SoftwareRender\FrameBuffer.cpp(111,17): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
-D:\learning\c++ program\SoftwareRender\SoftwareRender\FrameBuffer.cpp(112,17): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
-D:\learning\c++ program\SoftwareRender\SoftwareRender\FrameBuffer.cpp(113,17): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
-D:\learning\c++ program\SoftwareRender\SoftwareRender\FrameBuffer.cpp(114,17): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
-D:\learning\c++ program\SoftwareRender\SoftwareRender\FrameBuffer.cpp(115,17): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
-D:\learning\c++ program\SoftwareRender\SoftwareRender\FrameBuffer.cpp(118,13): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
-D:\learning\c++ program\SoftwareRender\SoftwareRender\FrameBuffer.cpp(130,13): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
-  SoftwareRender.vcxproj -> D:\learning\c++ program\SoftwareRender\Debug\SoftwareRender.exe
+﻿  main.cpp
+  SoftwareRender.vcxproj -> D:\learning\c++ program\myRenderer\Debug\SoftwareRender.exe
