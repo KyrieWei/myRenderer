@@ -1,4 +1,7 @@
 #pragma once
+#include <iostream>
+#include "vec3.h"
+
 class vec4
 {
 public:
@@ -8,7 +11,8 @@ public:
 	vec4() : x(0), y(0), z(0), w(0) {};
 	vec4(double elem) : x(elem), y(elem), z(elem), w(elem) {}
 	vec4(double _x, double _y, double _z, double _w) : x(_x), y(_y), z(_z), w(_w) {}
-	vec4(const vec4& t) :x(t.x), y(t.y), z(t.z), w(t.w) {}
+	vec4(const vec4& t) : x(t.x), y(t.y), z(t.z), w(t.w) {}
+	vec4(const vec3& v, double _w) : x(v.x), y(v.y), z(v.z), w(_w) {}
 
 	double& operator[] (int i)
 	{
@@ -32,6 +36,13 @@ public:
 			return z;
 		else
 			return w;
+	}
+
+	void print(const char* str)
+	{
+		std::cout << str << ":" << std::endl;
+		std::cout << x << " " << y << " " << z << " " << w << std::endl;
+		std::cout << std::endl;
 	}
 };
 

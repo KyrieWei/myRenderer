@@ -4,7 +4,7 @@
 
 FrameBuffer::FrameBuffer()
 {
-
+	
 }
 
 FrameBuffer::FrameBuffer(const int _width, const int _height, const int _channel) : width(_width), height(_height), channel(_channel)
@@ -23,8 +23,7 @@ FrameBuffer::~FrameBuffer()
 
 void FrameBuffer::draw_background(const vec4& color)
 {
-	if (!check_buffer())
-		return;
+	assert(image_buffer);
 
 	for (int i = 0, index = 0; i < width; i++)
 	{
@@ -39,14 +38,10 @@ void FrameBuffer::draw_background(const vec4& color)
 //point x, y left bottom to right up 
 void FrameBuffer::draw_pixel(int x, int y, const vec4& color)
 {
-	if(!check_buffer())
-		return;
+	assert(image_buffer);
 
-	if (x > width || x <= 0 || y > height || y <= 0)
-	{
-		std::cout << "draw_pixel out of frame_buffer range" << std::endl;
-		return;
-	}
+	assert(x < width && x >= 0 && y < height && y >= 0);
+
 
 	int index = ((height - y - 1) * width + x) * channel;
 
@@ -57,8 +52,6 @@ void FrameBuffer::draw_pixel(int x, int y, const vec4& color)
 
 void FrameBuffer::draw_line(const vec2& point0, const vec2& point1, const vec4& color)
 {
-	if (!check_buffer())
-		return;
 
 	int x0 = static_cast<int>(point0.x);
 	int y0 = static_cast<int>(point0.y);
@@ -163,19 +156,7 @@ void FrameBuffer::draw_filled_triangle(const vec2& point0, const vec2& point1, c
 
 void FrameBuffer::write_to_image(const char* file_name)
 {
-	if (!check_buffer())
-		return;
+	assert(!image_buffer);
 
 	stbi_write_jpg(file_name, width, height, channel, image_buffer, 100);
-}
-
-bool FrameBuffer::check_buffer()
-{
-	if (image_buffer == nullptr)
-	{
-		std::cout << "image_buffer is not initialized" << std::endl;
-		return false;
-	}
-
-	return true;
 }
