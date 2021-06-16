@@ -1,55 +1,60 @@
 #include "pipeline.h"
 
 
-void pipeline::render()
+void pipeline::setMVP(const mat4x4& model, const mat4x4& view, const mat4x4& projection)
 {
-	//create window
-	callbacks_t callbacks;
-	window_t* window = window_create("software renderer", screenWidth, screenHeight);
-	memset(&callbacks, 0, sizeof(callbacks_t));
+	this->model = model;
+	this->view = view;
+	this->projection = projection;
+}
 
-	//triangle definition
-	vec3 triangle[3] = { {1, 0, 0}, {0, 3, 0}, {-1, 0, 0} };
+void pipeline::drawArrays(vec3 data[], int data_length, int index[][3], int index_length)
+{
 
-	//model matrix
-	mat4x4 model;
+	vec3 point0, point1, point2;
+	vec4 clip_point0, clip_point1, clip_point2;
+	vec3 ndc_point0, ndc_point1, ndc_point2;
+	vec2 scr_point0, scr_point1, scr_point2;
 
-	//camera back 
-	mat4x4 view;
-	view = translate(view, vec3(0.0, 0.0, -3.0));
-
-	//perspective projection
-	mat4x4 projection = perspective(radians(45.0), (double)screenWidth / screenHeight, 0.1, 100.0);
-
-	forwardBuffer.draw_background(vec4(0.1, 0.3, 0.4, 1.0));
-
-	//triangle color
-	vec4 color(0.2, 0.6, 0.9, 1.0);
-
-	while (!window_should_close(window))
+	for (int i = 0; i < index_length; i++)
 	{
+		//vertex shader
+		//model space
+		point0 = data[index[i][0]];
+		point1 = data[index[i][1]];
+		point2 = data[index[i][2]];
+
 		//clip space
-		vec4 tri_0 = projection * view * model * vec4(triangle[0], 1.0);
-		vec4 tri_1 = projection * view * model * vec4(triangle[1], 1.0);
-		vec4 tri_2 = projection * view * model * vec4(triangle[2], 1.0);
+		clip_point0 = projection * view * model * vec4(point0, 1.0);
+		clip_point1 = projection * view * model * vec4(point1, 1.0);
+		clip_point2 = projection * view * model * vec4(point2, 1.0);
 
 		//ndc space
-		vec3 tri_one = vec3(tri_0.x / tri_0.w, tri_0.y / tri_0.w, tri_0.z / tri_0.w);
-		vec3 tri_two = vec3(tri_1.x / tri_0.w, tri_1.y / tri_1.w, tri_1.z / tri_1.w);
-		vec3 tri_three = vec3(tri_2.x / tri_2.w, tri_2.y / tri_2.w, tri_2.z / tri_2.w);
+		ndc_point0 = vec3(clip_point0.x, clip_point0.y, clip_point0.z) / clip_point0.w;
+		ndc_point1 = vec3(clip_point1.x, clip_point1.y, clip_point1.z) / clip_point1.w;
+		ndc_point2 = vec3(clip_point2.x, clip_point2.y, clip_point2.z) / clip_point2.w;
 
-		//screen space
-		vec2 ndc_0 = viewport(tri_one, screenWidth, screenHeight);
-		vec2 ndc_1 = viewport(tri_two, screenWidth, screenHeight);
-		vec2 ndc_2 = viewport(tri_three, screenWidth, screenHeight);
+		//scree space
+		scr_point0 = viewport(ndc_point0, screenWidth, screenHeight);
+		scr_point1 = viewport(ndc_point1, screenWidth, screenHeight);
+		scr_point2 = viewport(ndc_point2, screenWidth, screenHeight);
 
-		forwardBuffer.draw_filled_triangle(ndc_0, ndc_1, ndc_2, color);
+		//fragment
+		vec4 color = vec4(0.2, 0.6, 0.9, 1.0);
 
-		window_draw_image(window, &forwardBuffer);
-		input_poll_events();
+
+		forwardBuffer.draw_filled_triangle(scr_point0, scr_point1, scr_point2, color);
 	}
+}
 
-	window_destroy(window);
+void pipeline::clean_color(const vec4& color)
+{
+	forwardBuffer.draw_background(color);
+}
+
+void pipeline::render()
+{
+
 	
 
 }

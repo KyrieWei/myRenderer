@@ -82,6 +82,7 @@ mat4x4 rotate(const mat4x4& mat, double radians, const vec3& pivot)
 	mat4x4 mat_rotate;
 
 
+
 	return mat_rotate;
 }
 
@@ -91,7 +92,7 @@ mat4x4 perspective(double radians, double ratio, double n, double f)
 	mat4x4 pers;
 
 	pers.data[0] = 1.0 / (ratio * tan(radians / 2));
-	pers.data[5] = tan(radians / 2);
+	pers.data[5] = 1.0 / tan(radians / 2);
 	pers.data[10] = -(f + n) / (f - n);
 	pers.data[11] = -2 * n * f / (f - n);
 	pers.data[14] = -1;

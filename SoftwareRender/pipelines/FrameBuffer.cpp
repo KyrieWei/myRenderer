@@ -99,8 +99,8 @@ void FrameBuffer::draw_filled_triangle(const vec2& point0, const vec2& point1, c
 	vec2 tmp_1(point1);
 	vec2 tmp_2(point2);
 	if (tmp_0.y > tmp_1.y) std::swap(tmp_0, tmp_1);
-	if (tmp_1.y > tmp_2.y) std::swap(tmp_1, tmp_2);
 	if (tmp_0.y > tmp_2.y) std::swap(tmp_0, tmp_2);
+	if (tmp_1.y > tmp_2.y) std::swap(tmp_1, tmp_2);
 
 	
 	

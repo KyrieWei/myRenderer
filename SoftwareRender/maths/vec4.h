@@ -38,6 +38,17 @@ public:
 			return w;
 	}
 
+	vec4 operator*(double t) const
+	{
+		return vec4(x * t, y * t, z * t, w * t);
+	}
+
+	vec4 operator/(double t) const
+	{
+		double fac = 1.0 / t;
+		return vec4(x * fac, y * fac, z * fac, w * fac);
+	}
+
 	void print(const char* str)
 	{
 		std::cout << str << ":" << std::endl;

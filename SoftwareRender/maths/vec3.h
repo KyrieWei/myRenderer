@@ -30,4 +30,15 @@ public:
 			return z;
 	}
 
+	vec3 operator*(double t) const
+	{
+		return vec3(x * t, y * t, z * t);
+	}
+
+	vec3 operator/(double t) const
+	{
+		double fac = 1.0 / t;
+		return vec3(x * fac, y * fac, z * fac);
+	}
+
 };
