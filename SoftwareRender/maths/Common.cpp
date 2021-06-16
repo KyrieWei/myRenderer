@@ -77,6 +77,14 @@ mat4x4 scale(const mat4x4& mat, const vec3& v)
 	return mat_scale;
 }
 
+mat4x4 rotate(const mat4x4& mat, double radians, const vec3& pivot)
+{
+	mat4x4 mat_rotate;
+
+
+	return mat_rotate;
+}
+
 mat4x4 perspective(double radians, double ratio, double n, double f)
 {
 	assert(radians != 0 && ratio != 0 && (f-n) != 0);

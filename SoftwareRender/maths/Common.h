@@ -19,6 +19,7 @@ mat4x4 getInverseMatrix(const mat4x4& mat);
 
 mat4x4 translate(const mat4x4& mat, const vec3& v);
 mat4x4 scale(const mat4x4& mat, const vec3& v);
+mat4x4 rotate(const mat4x4& mat, double radians, const vec3& pivot);
 
 mat4x4 perspective(double radians, double ratio, double n, double f);
 
