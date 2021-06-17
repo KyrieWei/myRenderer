@@ -15,6 +15,8 @@ vec3 normalize(const vec3& vec);
 
 double radians(double degree);
 
+void setIdentity(mat4x4& mat);
+
 mat4x4 getTransposeMatrix(const mat4x4& mat);
 mat4x4 getInverseMatrix(const mat4x4& mat);
 

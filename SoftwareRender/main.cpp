@@ -1,13 +1,15 @@
 #include <iostream>
+#include <ctime>
 
 #include "pipelines/pipeline.h"
+#include "tools/model.h"
 
 const int WIDTH = 800;
 const int HEIGHT = 600;
 const int CHANNEL = 4;
 
-const char* file_name = "results/test.jpg";
 
+void handle_key_pressed(window_t* window);
 
 int main()
 {
@@ -53,29 +55,60 @@ int main()
 
 	int index_num = 12;
 
-	//model matrix
-	mat4x4 model;
+	//Load model
+	Model nier;
+	nier.load("assets/nier2b7.obj");
 
-	//camera back 
-	mat4x4 view;
-	view = translate(view, vec3(0.0, 0.0, -5.0));
+	std::cout << nier.vertex_num << std::endl;
+	std::cout << nier.tex_num << std::endl;
+	std::cout << nier.face_num << std::endl;
 
-	//perspective projection
-	mat4x4 projection = perspective(radians(60.0), (double)WIDTH / HEIGHT, 0.1, 100.0);
+	std::cout << nier.normal_index[0][0] << std::endl;
 
 	pipeline m_pipeline(WIDTH, HEIGHT);
 
-	m_pipeline.clean_color(vec4(0.1, 0.3, 0.4, 1.0));
+	vec4 bg_color = vec4(0.1, 0.3, 0.4, 1.0);
+	m_pipeline.clean_color(bg_color);
+
+	int rate = 4.0;
+	double angle = 0.0;
+	double scale_factor = 15.0;
 
 	//send data to 
 	while (!window_should_close(window))
 	{
-		double angle = 20.0;
-		model = rotate(model, radians(angle), vec3(0.0, 1.0, 0.0));
+		m_pipeline.clean_color(bg_color);
 
+		//TODO: add camera
+		//handle_key_pressed(window);
+
+		angle += rate;
+		if (angle > 360)
+			angle = 0;
+
+		//model matrix
+		mat4x4 model;
+		model = scale(model, vec3(0.3, 0.3, 0.3));
+		model = rotate(model, radians(angle), vec3(1.0, 1.0, 0.0));
+		model = translate(model, vec3(-2.0, 1.0, 0.0));
+		
+		//camera back 
+		mat4x4 view;
+		view = translate(view, vec3(0.0, 0.0, -5.0));
+
+		//perspective projection
+		mat4x4 projection = perspective(radians(45.0), (double)WIDTH / HEIGHT, 0.1, 100.0);
+
+		//draw cube
 		m_pipeline.setMVP(model, view, projection);
-
 		m_pipeline.drawArrays(cube, vertex_num, cube_index, index_num);
+
+		//draw nier head
+		setIdentity(model);
+		model = scale(model, vec3(scale_factor, scale_factor, scale_factor));
+		//model = rotate(model, radians(angle), vec3(0.0, 1.0, 0.0));
+		m_pipeline.setMVP(model, view, projection);
+		m_pipeline.drawArrays(nier);
 
 		window_draw_image(window, &m_pipeline.forwardBuffer);
 		input_poll_events();
@@ -86,4 +119,19 @@ int main()
 	m_pipeline.render();
 
 	return 0;
+}
+
+void handle_key_pressed(window_t* window)
+{
+	if (input_key_pressed(window, KEY_A))
+		std::cout << "KEY A Pressed" << std::endl;
+
+	if (input_key_pressed(window, KEY_W))
+		std::cout << "KEY W Pressed" << std::endl;
+
+	if (input_key_pressed(window, KEY_S))
+		std::cout << "KEY S Pressed" << std::endl;
+
+	if (input_key_pressed(window, KEY_D))
+		std::cout << "KEY D Pressed" << std::endl;
 }

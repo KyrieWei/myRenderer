@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="components\camera.cpp" />
     <ClCompile Include="gui\Image.cpp" />
     <ClCompile Include="gui\Window.cpp" />
     <ClCompile Include="main.cpp" />
@@ -149,8 +150,10 @@
     <ClCompile Include="maths\vec4.cpp" />
     <ClCompile Include="pipelines\FrameBuffer.cpp" />
     <ClCompile Include="pipelines\pipeline.cpp" />
+    <ClCompile Include="tools\Model.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="components\camera.h" />
     <ClInclude Include="gui\Image.h" />
     <ClInclude Include="gui\Window.h" />
     <ClInclude Include="maths\Common.h" />
@@ -160,6 +163,7 @@
     <ClInclude Include="maths\vec4.h" />
     <ClInclude Include="pipelines\FrameBuffer.h" />
     <ClInclude Include="pipelines\pipeline.h" />
+    <ClInclude Include="tools\Model.h" />
     <ClInclude Include="tools\macro.h" />
     <ClInclude Include="tools\stb_image_write.h" />
   </ItemGroup>

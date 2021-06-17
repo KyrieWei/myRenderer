@@ -45,6 +45,12 @@
     <ClCompile Include="maths\mat4x4.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="components\camera.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\Model.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="maths\vec3.h">
@@ -78,6 +84,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="maths\mat4x4.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="components\camera.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\Model.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
