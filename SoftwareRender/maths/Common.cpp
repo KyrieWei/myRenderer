@@ -37,6 +37,13 @@ vec4 lerp(const vec4& left, const vec4& right, double t)
 	return res;
 }
 
+vec3 normalize(const vec3& vec)
+{
+	double length = 1.0 / sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+	return vec * length;
+}
+
+
 double radians(double degree)
 {
 	return (degree * PI) / 180.0;
@@ -81,7 +88,19 @@ mat4x4 rotate(const mat4x4& mat, double radians, const vec3& pivot)
 {
 	mat4x4 mat_rotate;
 
+	vec3 A = normalize(pivot);
+	double c = cos(radians);
+	double s = sin(radians);
 
+	mat_rotate.data[0] = c + (1 - c) * A.x * A.x;
+	mat_rotate.data[1] = (1 - c) * A.x * A.y - s * A.z;
+	mat_rotate.data[2] = (1 - c) * A.x * A.z + s * A.y;
+	mat_rotate.data[4] = (1 - c) * A.x * A.y + s * A.z;
+	mat_rotate.data[5] = c + (1 - c) * A.y * A.y;
+	mat_rotate.data[6] = (1 - c) * A.y * A.z - s * A.x;
+	mat_rotate.data[8] = (1 - c) * A.x * A.z - s * A.y;
+	mat_rotate.data[9] = (1 - c) * A.y * A.z + s * A.x;
+	mat_rotate.data[10] = c + (1 - c) * A.z * A.z;
 
 	return mat_rotate;
 }

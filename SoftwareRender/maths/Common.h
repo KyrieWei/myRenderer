@@ -11,6 +11,8 @@ vec2 lerp(const vec2& left, const vec2& right, double t);
 vec3 lerp(const vec3& left, const vec3& right, double t);
 vec4 lerp(const vec4& left, const vec4& right, double t);
 
+vec3 normalize(const vec3& vec);
+
 double radians(double degree);
 
 mat4x4 getTransposeMatrix(const mat4x4& mat);

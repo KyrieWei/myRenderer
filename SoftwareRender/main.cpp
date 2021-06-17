@@ -70,8 +70,8 @@ int main()
 	//send data to 
 	while (!window_should_close(window))
 	{
-
-
+		double angle = 20.0;
+		model = rotate(model, radians(angle), vec3(0.0, 1.0, 0.0));
 
 		m_pipeline.setMVP(model, view, projection);
 
