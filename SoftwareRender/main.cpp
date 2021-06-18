@@ -105,7 +105,7 @@ int main()
 
 		//draw nier head
 		setIdentity(model);
-		model = scale(model, vec3(scale_factor, scale_factor, scale_factor));
+		//model = scale(model, vec3(scale_factor, scale_factor, scale_factor));
 		//model = rotate(model, radians(angle), vec3(0.0, 1.0, 0.0));
 		m_pipeline.setMVP(model, view, projection);
 		m_pipeline.drawArrays(nier);
