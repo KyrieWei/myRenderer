@@ -36,7 +36,7 @@ void blit_framebuffer_to_image(FrameBuffer* src, image_t* dst)
 	{
 		dst->buffer[i * 4] = src->image_buffer[i * 4 + 2];
 		dst->buffer[i * 4 + 1] = src->image_buffer[i * 4 + 1];
-		dst->buffer[i * 4 + 2] = src->image_buffer[i * 4];
+		dst->buffer[i * 4 + 2] = src->image_buffer[i * 4 ];
 		dst->buffer[i * 4 + 3] = src->image_buffer[i * 4 + 3];
 	}
 }

@@ -37,10 +37,45 @@ vec4 lerp(const vec4& left, const vec4& right, double t)
 	return res;
 }
 
+vec3 barycentirc_coord(const vec2& p0, const vec2& p1, const vec2& p2, const vec2& p)
+{
+	//p = (1 - u - v) * A + u * B + v * C
+
+	vec2 a = p1 - p0;
+	vec2 b = p2 - p0;
+	vec2 n = p - p0;
+
+	double k = a.x * b.y - b.x * a.y;
+	if (k == 0)
+		return vec3(0.0, 0.0, 0.0);
+
+	double k_inv = 1.0 / k;
+
+	double u = k_inv * (b.y * n.x - b.x * n.y);
+	double v = k_inv * (-a.y * n.x + a.x * n.y);
+
+	return vec3(1 - u - v, u, v);
+}
+
+double depth_lerp(double vertex0_ndc_z, double vertex1_ndc_z, double vertex2_ndc_z, const vec3& bary)
+{
+	return bary.x * (vertex0_ndc_z + 1) / 2.0 + bary.y * (vertex1_ndc_z + 1) / 2.0 + bary.z * (vertex2_ndc_z + 1) / 2.0;
+}
+
 vec3 normalize(const vec3& vec)
 {
 	double length = 1.0 / sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
 	return vec * length;
+}
+
+double dot(const vec3& v1, const vec3& v2)
+{
+	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+}
+
+vec3 cross(const vec3& v1, const vec3& v2)
+{
+	return vec3(v1.y * v2.z - v2.y * v1.z, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v2.x * v1.y);
 }
 
 

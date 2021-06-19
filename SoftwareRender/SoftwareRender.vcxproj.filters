@@ -51,6 +51,12 @@
     <ClCompile Include="tools\Model.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="pipelines\vertexOut.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="pipelines\Lighting.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="maths\vec3.h">
@@ -90,6 +96,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="tools\Model.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="pipelines\vertexOut.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="pipelines\Lighting.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

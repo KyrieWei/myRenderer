@@ -2,6 +2,7 @@
 #include <iostream>
 #include "vec3.h"
 
+
 class vec4
 {
 public:

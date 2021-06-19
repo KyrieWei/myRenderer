@@ -103,7 +103,6 @@ void FrameBuffer::draw_filled_triangle(const vec2& point0, const vec2& point1, c
 	if (tmp_1.y > tmp_2.y) std::swap(tmp_1, tmp_2);
 
 	
-	
 	//draw the down half triangle
 	for (int i = tmp_0.y; i <= tmp_1.y; i++)
 	{

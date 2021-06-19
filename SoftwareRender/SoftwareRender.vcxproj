@@ -149,7 +149,9 @@
     <ClCompile Include="maths\vec3.cpp" />
     <ClCompile Include="maths\vec4.cpp" />
     <ClCompile Include="pipelines\FrameBuffer.cpp" />
+    <ClCompile Include="pipelines\Lighting.cpp" />
     <ClCompile Include="pipelines\pipeline.cpp" />
+    <ClCompile Include="pipelines\vertexOut.cpp" />
     <ClCompile Include="tools\Model.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -162,7 +164,9 @@
     <ClInclude Include="maths\vec3.h" />
     <ClInclude Include="maths\vec4.h" />
     <ClInclude Include="pipelines\FrameBuffer.h" />
+    <ClInclude Include="pipelines\Lighting.h" />
     <ClInclude Include="pipelines\pipeline.h" />
+    <ClInclude Include="pipelines\vertexOut.h" />
     <ClInclude Include="tools\Model.h" />
     <ClInclude Include="tools\macro.h" />
     <ClInclude Include="tools\stb_image_write.h" />
