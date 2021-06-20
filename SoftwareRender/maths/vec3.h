@@ -61,6 +61,33 @@ public:
 		return vec3(-x, -y, -z);
 	}
 
+	void operator+=(const vec3& v)
+	{
+		this->x += v.x;
+		this->y += v.y;
+		this->z += v.z;
+	}
+
+	void operator-=(const vec3& v)
+	{
+		this->x -= v.x;
+		this->y -= v.y;
+		this->z -= v.z;
+	}
+
+	void operator*=(double t)
+	{
+		this->x *= t;
+		this->y *= t;
+		this->z *= t;
+	}
+
+	void operator/=(double t)
+	{
+		double fac = 1.0 / t;
+		*this *= fac;
+	}
+
 	friend vec3 operator*(double t, const vec3& v)
 	{
 		return v * t;

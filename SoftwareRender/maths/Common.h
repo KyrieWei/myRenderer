@@ -34,4 +34,6 @@ mat4x4 rotate(const mat4x4& mat, double radians, const vec3& pivot);
 
 mat4x4 perspective(double radians, double ratio, double n, double f);
 
+mat4x4 lookAt(const vec3& position, const vec3& target, const vec3& up);
+
 vec2 viewport(const vec3& ndc, int width, int height);

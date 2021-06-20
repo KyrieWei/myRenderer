@@ -47,12 +47,12 @@ vec3 barycentirc_coord(const vec2& p0, const vec2& p1, const vec2& p2, const vec
 
 	double k = a.x * b.y - b.x * a.y;
 	if (k == 0)
-		return vec3(0.0, 0.0, 0.0);
+		return vec3(-1.0, 1.0, 1.0);
 
 	double k_inv = 1.0 / k;
 
-	double u = k_inv * (b.y * n.x - b.x * n.y);
-	double v = k_inv * (-a.y * n.x + a.x * n.y);
+	double u = std::max(k_inv * (b.y * n.x - b.x * n.y), 0.0);
+	double v = std::max(k_inv * (-a.y * n.x + a.x * n.y), 0.0);
 
 	return vec3(1 - u - v, u, v);
 }
@@ -173,6 +173,30 @@ mat4x4 perspective(double radians, double ratio, double n, double f)
 	pers.data[15] = 0;
 
 	return pers;
+}
+
+mat4x4 lookAt(const vec3& position, const vec3& target, const vec3& up)
+{
+	mat4x4 mat;
+	vec3 d = normalize(position - target);
+	vec3 r = cross(d, up);
+
+	mat.data[0] = r.x;
+	mat.data[1] = r.y;
+	mat.data[2] = r.z;
+	mat.data[3] = -r.x * position.x - r.y * position.y - r.z * position.z;
+	
+	mat.data[4] = up.x;
+	mat.data[5] = up.y;
+	mat.data[6] = up.z;
+	mat.data[7] = -up.x * position.x - up.y * position.y - up.z * position.z;
+	
+	mat.data[8] = d.x;
+	mat.data[9] = d.y;
+	mat.data[10] = d.z;
+	mat.data[11] = -d.x * position.x - d.y * position.y - d.z * position.z;
+
+	return mat;
 }
 
 vec2 viewport(const vec3& ndc, int width, int height)
