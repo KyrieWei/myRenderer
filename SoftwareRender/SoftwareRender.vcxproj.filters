@@ -57,6 +57,12 @@
     <ClCompile Include="pipelines\Lighting.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="gameobjects\Object.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="gameobjects\cube.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="maths\vec3.h">
@@ -102,6 +108,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="pipelines\Lighting.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="gameobjects\Object.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="gameobjects\cube.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

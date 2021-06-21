@@ -4,6 +4,7 @@
 #include "pipelines/pipeline.h"
 #include "tools/model.h"
 #include "components/camera.h"
+#include "gameobjects/cube.h"
 
 const int WIDTH = 800;
 const int HEIGHT = 600;
@@ -14,60 +15,6 @@ double angle = 0.0;
 
 
 void handle_key_pressed(window_t* window);
-
-void draw_cube(pipeline& m_pipeline, vec3 cube[], int vertex_num, int cube_index[][3], int index_num, vec3 cube_color[], const Light& sun, const camera& cam)
-{
-	angle += rate;
-	if (angle > 360)
-		angle = 0;
-
-	//model matrix
-	mat4x4 model;
-	model = scale(model, vec3(1.0, 1.0, 1.0));
-	model = rotate(model, radians(angle), vec3(0.0, 1.0, 0.0));
-	model = translate(model, vec3(0.0, -0.0, -10.0));
-
-	//camera back 
-	mat4x4 view;
-	view = cam.GetViewMatrix();
-
-	//perspective projection
-	mat4x4 projection = perspective(radians(cam.zoom), (double)WIDTH / HEIGHT, 0.1, 100.0);
-
-
-	//draw cube
-	m_pipeline.setShadingMode(shading_mode::GOURAUD_SHADING);
-	m_pipeline.setMVP(model, view, projection);
-	m_pipeline.setLight(sun);
-	m_pipeline.setCamera(cam.Position);
-	
-
-	m_pipeline.drawArrays(cube, vertex_num, cube_index, index_num, cube_color);
-
-}
-
-void draw_obj_model(pipeline& m_pipeline, const Model& nier, const Light& sun, const camera& cam)
-{
-	mat4x4 model;
-	model = scale(model, vec3(1.0, 1.0, 1.0));
-	//model = rotate(model, radians(angle), vec3(0.0, 1.0, 0.0));
-	model = translate(model, vec3(0.0, 0.0, -80.0));
-
-	//camera back 
-	mat4x4 view;
-	view = translate(view, vec3(0.0, 0.0, -50));
-
-	//perspective projection
-	mat4x4 projection = perspective(radians(60.0), (double)WIDTH / HEIGHT, 0.1, 1000.0);
-
-	//draw nier head
-	m_pipeline.setShadingMode(shading_mode::FLAT_SHADING);
-	m_pipeline.setMVP(model, view, projection);
-	m_pipeline.setLight(sun);
-	m_pipeline.setCamera(cam.Position);
-
-	m_pipeline.drawArrays(nier);
-}
 
 int main()
 {
@@ -80,51 +27,34 @@ int main()
 	//triangle definition
 	vec3 triangle[3] = { {-1, -1, 0}, {1, -1, 0}, {0, 1, 0} };
 
-	//cube definition
-	vec3 cube[8] =
+	//cube
+	cube m_cube;
+
+	vec3 plane[4] =
 	{
-		{-1, -1, -1},
-		{-1,  1, -1},
-		{ 1,  1, -1},
-		{ 1, -1, -1}, //front
-		{ 1, -1,  1},
-		{ 1,  1,  1},
-		{-1,  1,  1}, 
-		{-1, -1,  1} //back
+		{-1, -1, 1},
+		{1, -1, 1},
+		{1, -1, -1},
+		{-1, -1, -1}
 	};
 
-	vec3 cube_color[8] =
+	int plane_vertex_num = 4;
+
+	int plane_index[2][3] =
+	{
+		{0, 1, 3},
+		{1, 2, 3}
+	};
+
+	int plane_index_num = 2;
+
+	vec3 plane_color[4] =
 	{
 		{1.0, 0.0, 0.0},
 		{0.0, 1.0, 0.0},
 		{0.0, 0.0, 1.0},
-		{0.0, 1.0, 0.0},
-		{1.0, 0.0, 0.0},
-		{0.0, 1.0, 0.0},
-		{0.0, 0.0, 1.0},
-		{1.0, 0.0, 0.0}
+		{0.0, 1.0, 0.0}
 	};
-
-	int vertex_num = 8;
-
-	//right hand counter-clock
-	int cube_index[12][3] =
-	{
-		{0, 1, 2},
-		{0, 2, 3}, //back
-		{3, 2, 5},
-		{3, 5, 4}, //right
-		{0, 6, 1},
-		{0, 7, 6}, //left
-		{1, 5, 2},
-		{1, 6, 5}, //up
-		{3, 4, 7},
-		{0, 3, 7}, //bottom
-		{4, 5, 6},
-		{4, 6, 7}  //front
-	};
-
-	int index_num = 12;
 
 	//Load model
 	Model nier;
@@ -147,7 +77,7 @@ int main()
 	sun.color = vec3(1.0, 1.0, 1.0);
 
 	//camera
-	vec3 camera_pos = vec3(0.0, 2.0, 5.0);
+	vec3 camera_pos = vec3(0.0, 8.0, 5.0);
 	camera cam(camera_pos, vec3(0.0, 1.0, 0.0));
 
 	double scale_factor = 1.0;
@@ -157,11 +87,41 @@ int main()
 	{
 		m_pipeline.clean_color(bg_color);
 		m_pipeline.clean_depth();
+		m_pipeline.triangle_num_drawed = 0;
 
-		
-		draw_cube(m_pipeline, cube, vertex_num, cube_index, index_num, cube_color, sun, cam);
+		angle += rate;
+		if (angle > 360)
+			angle = 0;
 
-		//draw_obj_model(m_pipeline, nier, sun, camera_pos);
+		//model matrix
+		mat4x4 model;
+		model = scale(model, vec3(1.0, 1.0, 1.0));
+		model = rotate(model, radians(angle), vec3(0.0, 1.0, 0.0));
+		model = translate(model, vec3(0.0, -0.0, -10.0));
+
+		//camera back 
+		mat4x4 view;
+		view = cam.GetViewMatrix();
+
+		//perspective projection
+		mat4x4 projection = perspective(radians(cam.zoom), (double)WIDTH / HEIGHT, 0.1, 100.0);
+
+		//draw cube
+		m_pipeline.setShadingMode(shading_mode::GOURAUD_SHADING);
+		m_pipeline.setMVP(model, view, projection);
+		m_pipeline.setLight(sun);
+		m_pipeline.setCamera(cam.Position);
+		m_pipeline.drawArrays(m_cube);
+
+		//draw plane
+		setIdentity(model);
+		model = scale(model, vec3(6.0, 1, 6.0));
+		model = translate(model, vec3(0.0, -0.1, -10.0));
+
+		m_pipeline.setShadingMode(shading_mode::FLAT_SHADING);
+		m_pipeline.setMVP(model, view, projection);
+
+		m_pipeline.drawArrays(plane, plane_vertex_num, plane_index, plane_index_num, plane_color);
 
 		window_draw_image(window, &m_pipeline.forwardBuffer);
 		input_poll_events();

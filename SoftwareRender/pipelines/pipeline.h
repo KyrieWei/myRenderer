@@ -4,6 +4,7 @@
 #include "../tools/Model.h"
 #include "vertexOut.h"
 #include "Lighting.h"
+#include "../gameobjects/Object.h"
 
 enum shading_mode
 {
@@ -46,11 +47,15 @@ public:
 	void setShadingMode(shading_mode mode);
 
 	//vertex & fragment shader
-	void vertex_shader(VertexPositionInputs& vertex);
+	void compute_vertex_WVC(VertexPositionInputs& vertex);
+	void compute_vertex_NS(VertexPositionInputs& vertex);
 	void fragment_shader(VertexPositionInputs& vertex);
 
 	//face culling
 	bool face_culling(const VertexPositionInputs& vertex0, const VertexPositionInputs& vertex1, const VertexPositionInputs& vertex2);
+
+	//triangle clip
+	bool triangle_clip(const VertexPositionInputs& vertex0, const VertexPositionInputs& vertex1, const VertexPositionInputs& vertex2);
 
 	//depth write & test
 	void depth_write(int i, int j, double depth);
@@ -66,7 +71,7 @@ public:
 
 	
 	void drawArrays(vec3 data[], int data_length, int index[][3], int index_length, vec3 data_color[]);
-	void drawArrays(const Model& obj);
+	void drawArrays(const Object& obj);
 
 
 	void clean_color(const vec4& color);

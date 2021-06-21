@@ -32,19 +32,21 @@ void pipeline::setShadingMode(shading_mode mode)
 	shadingMode = mode;
 }
 
-void pipeline::vertex_shader(VertexPositionInputs& vertex)
+void pipeline::compute_vertex_WVC(VertexPositionInputs& vertex)
 {
 	vertex.positionWS = model * vec4(vertex.positionOS, 1.0);
 	vertex.positionVS = view * vec4(vertex.positionWS, 1.0);
 	vertex.positionCS = projection * vec4(vertex.positionVS, 1.0);
 
-	//clip
+}
 
+void pipeline::compute_vertex_NS(VertexPositionInputs& vertex)
+{
 	vertex.positionNDC = vertex.positionCS / vertex.positionCS.w;
 	vertex.positionSS = viewport(vertex.positionNDC, screenWidth, screenHeight);
-
-	//normal 
 }
+
+
 
 void pipeline::fragment_shader(VertexPositionInputs& vertex)
 {
@@ -60,6 +62,21 @@ bool pipeline::face_culling(const VertexPositionInputs& vertex0, const VertexPos
 		return false;
 	else
 		return true;
+}
+
+bool pipeline::triangle_clip(const VertexPositionInputs& vertex0, const VertexPositionInputs& vertex1, const VertexPositionInputs& vertex2)
+{
+	double abs_w = abs(vertex0.positionCS.w);
+	if (abs(vertex0.positionCS.x) > abs_w || abs(vertex0.positionCS.y) > abs_w || abs(vertex0.positionCS.z) > abs_w)
+		return true;
+	abs_w = abs(vertex1.positionCS.w);
+	if (abs(vertex1.positionCS.x) > abs_w || abs(vertex1.positionCS.y) > abs_w || abs(vertex1.positionCS.z) > abs_w)
+		return true;
+	abs_w = abs(vertex2.positionCS.w);
+	if (abs(vertex2.positionCS.x) > abs_w || abs(vertex2.positionCS.y) > abs_w || abs(vertex2.positionCS.z) > abs_w)
+		return true;
+
+	return false;
 }
 
 
@@ -185,8 +202,7 @@ void pipeline::rasterization(const VertexPositionInputs& vertex0, const VertexPo
 
 void pipeline::drawArrays(vec3 data[], int data_length, int index[][3], int index_length, vec3 data_color[])
 {
-	triangle_num_drawed = 0;
-	for (int i = 0; i < 12; i++)
+	for (int i = 0; i < index_length; i++)
 	{
 		VertexPositionInputs vertex0, vertex1, vertex2;
 		vertex0.positionOS = data[index[i][0]];
@@ -198,13 +214,21 @@ void pipeline::drawArrays(vec3 data[], int data_length, int index[][3], int inde
 		vertex2.texture = data_color[index[i][2]];
 
 		//vertex shader
-		vertex_shader(vertex0);
-		vertex_shader(vertex1);
-		vertex_shader(vertex2);
+		compute_vertex_WVC(vertex0);
+		compute_vertex_WVC(vertex1);
+		compute_vertex_WVC(vertex2);
 
 		//face culling
 		if (face_culling(vertex0, vertex1, vertex2))
 			continue;
+
+		//triangle clip
+		if (triangle_clip(vertex0, vertex1, vertex2))
+			continue;
+
+		compute_vertex_NS(vertex0);
+		compute_vertex_NS(vertex1);
+		compute_vertex_NS(vertex2);
 
 		//fragment shader
 
@@ -215,7 +239,7 @@ void pipeline::drawArrays(vec3 data[], int data_length, int index[][3], int inde
 	}
 }
 
-void pipeline::drawArrays(const Model& obj)
+void pipeline::drawArrays(const Object& obj)
 {
 	triangle_num_drawed = 0;
 
@@ -228,15 +252,21 @@ void pipeline::drawArrays(const Model& obj)
 		vertex2.positionOS = obj.vertex[obj.vertex_index[i][2] - 1];
 
 		//vertex shader
-		vertex_shader(vertex0);
-		vertex_shader(vertex1);
-		vertex_shader(vertex2);
+		compute_vertex_WVC(vertex0);
+		compute_vertex_WVC(vertex1);
+		compute_vertex_WVC(vertex2);
 
 		//face culling
 		if (face_culling(vertex0, vertex1, vertex2))
 			continue;
 
-		//fragment shader
+		//triangle clip
+		if (triangle_clip(vertex0, vertex1, vertex2))
+			continue;
+
+		compute_vertex_NS(vertex0);
+		compute_vertex_NS(vertex1);
+		compute_vertex_NS(vertex2);
 
 
 		//rasterization
