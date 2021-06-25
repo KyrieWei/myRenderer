@@ -95,6 +95,11 @@ bool pipeline::depth_test(int i, int j, double depth)
 		return false;
 }
 
+void pipeline::sample_texture(const vec2& uv)
+{
+	
+}
+
 void pipeline::flat_shading(const VertexPositionInputs& vertex0, const VertexPositionInputs& vertex1, const VertexPositionInputs& vertex2)
 {
 
@@ -231,11 +236,11 @@ void pipeline::drawArrays(vec3 data[], int data_length, int index[][3], int inde
 		compute_vertex_NS(vertex2);
 
 		//fragment shader
-
-
+		
 		//rasterization
-		triangle_num_drawed++;
 		rasterization(vertex0, vertex1, vertex2);
+
+		triangle_num_drawed++;
 	}
 }
 
@@ -250,6 +255,10 @@ void pipeline::drawArrays(const Object& obj)
 		vertex0.positionOS = obj.vertex[obj.vertex_index[i][0] - 1];
 		vertex1.positionOS = obj.vertex[obj.vertex_index[i][1] - 1];
 		vertex2.positionOS = obj.vertex[obj.vertex_index[i][2] - 1];
+
+		vertex0.uv = obj.tex_coord[obj.tex_coord_index[i][0] - 1];
+		vertex1.uv = obj.tex_coord[obj.tex_coord_index[i][1] - 1];
+		vertex2.uv = obj.tex_coord[obj.tex_coord_index[i][2] - 1];
 
 		//vertex shader
 		compute_vertex_WVC(vertex0);
@@ -270,8 +279,9 @@ void pipeline::drawArrays(const Object& obj)
 
 
 		//rasterization
-		triangle_num_drawed++;
 		rasterization(vertex0, vertex1, vertex2);
+
+		triangle_num_drawed++;
 	}
 }
 

@@ -6,7 +6,7 @@ public:
 
 public:
 	vec2() : x(0), y(0){}
-	vec2(int _x, int _y) : x(_x), y(_y) {}
+	vec2(double _x, double _y) : x(_x), y(_y) {}
 	vec2(const vec2& t) : x(t.x), y(t.y) {}
 
 	vec2 operator+(const vec2& v) const

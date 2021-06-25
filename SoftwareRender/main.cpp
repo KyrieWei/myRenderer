@@ -2,9 +2,10 @@
 #include <ctime>
 
 #include "pipelines/pipeline.h"
-#include "tools/model.h"
+#include "gameobjects/model.h"
 #include "components/camera.h"
 #include "gameobjects/cube.h"
+#include "gameobjects/plane.h"
 
 const int WIDTH = 800;
 const int HEIGHT = 600;
@@ -30,31 +31,9 @@ int main()
 	//cube
 	cube m_cube;
 
-	vec3 plane[4] =
-	{
-		{-1, -1, 1},
-		{1, -1, 1},
-		{1, -1, -1},
-		{-1, -1, -1}
-	};
-
-	int plane_vertex_num = 4;
-
-	int plane_index[2][3] =
-	{
-		{0, 1, 3},
-		{1, 2, 3}
-	};
-
-	int plane_index_num = 2;
-
-	vec3 plane_color[4] =
-	{
-		{1.0, 0.0, 0.0},
-		{0.0, 1.0, 0.0},
-		{0.0, 0.0, 1.0},
-		{0.0, 1.0, 0.0}
-	};
+	//plane
+	plane m_plane;
+	m_plane.loadTexture("assets/textures/floor.jpg", TEXTURE_FILTER::REPEAT);
 
 	//Load model
 	Model nier;
@@ -121,7 +100,7 @@ int main()
 		m_pipeline.setShadingMode(shading_mode::FLAT_SHADING);
 		m_pipeline.setMVP(model, view, projection);
 
-		m_pipeline.drawArrays(plane, plane_vertex_num, plane_index, plane_index_num, plane_color);
+		m_pipeline.drawArrays(m_plane);
 
 		window_draw_image(window, &m_pipeline.forwardBuffer);
 		input_poll_events();

@@ -48,9 +48,6 @@
     <ClCompile Include="components\camera.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="tools\Model.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="pipelines\vertexOut.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -61,6 +58,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="gameobjects\cube.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="gameobjects\plane.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="gameobjects\Model.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -101,9 +104,6 @@
     <ClInclude Include="components\camera.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="tools\Model.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="pipelines\vertexOut.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -114,6 +114,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="gameobjects\cube.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="gameobjects\plane.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="gameobjects\Model.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\stb_image.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

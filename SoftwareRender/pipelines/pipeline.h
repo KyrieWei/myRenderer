@@ -1,7 +1,7 @@
 #pragma once
 #include "FrameBuffer.h"
 #include "../gui/Window.h"
-#include "../tools/Model.h"
+#include "../gameobjects/Model.h"
 #include "vertexOut.h"
 #include "Lighting.h"
 #include "../gameobjects/Object.h"
@@ -57,10 +57,11 @@ public:
 	//triangle clip
 	bool triangle_clip(const VertexPositionInputs& vertex0, const VertexPositionInputs& vertex1, const VertexPositionInputs& vertex2);
 
-	//depth write & test
+	//depth write & test 
 	void depth_write(int i, int j, double depth);
 	bool depth_test(int, int j, double depth);
 
+	void sample_texture(const vec2& uv);
 
 	//shading strategy
 	void flat_shading(const VertexPositionInputs& vertex0, const VertexPositionInputs& vertex1, const VertexPositionInputs& vertex2);
