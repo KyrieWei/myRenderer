@@ -11,6 +11,8 @@ vec2 lerp(const vec2& left, const vec2& right, double t);
 vec3 lerp(const vec3& left, const vec3& right, double t);
 vec4 lerp(const vec4& left, const vec4& right, double t);
 
+double clamp(double u, double min, double max);
+
 vec3 barycentirc_coord(const vec2& p0, const vec2& p1, const vec2& p2, const vec2& p);
 
 double depth_lerp(double vertex0_ndc_z, double vertex1_ndc_z, double vertex2_ndc_z, const vec3& bary);

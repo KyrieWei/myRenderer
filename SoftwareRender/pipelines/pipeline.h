@@ -34,6 +34,9 @@ public:
 
 	double* depthBuffer;
 
+	unsigned char* texture_data;
+	int texture_width, texture_height, texture_channle;
+
 	int triangle_num_drawed;
 
 public:
@@ -58,10 +61,13 @@ public:
 	bool triangle_clip(const VertexPositionInputs& vertex0, const VertexPositionInputs& vertex1, const VertexPositionInputs& vertex2);
 
 	//depth write & test 
+	void depth_persp(const VertexPositionInputs& vertex0, const VertexPositionInputs& vertex1, const VertexPositionInputs& vertex2);
 	void depth_write(int i, int j, double depth);
 	bool depth_test(int, int j, double depth);
 
-	void sample_texture(const vec2& uv);
+	void bind_texture(unsigned char* texture_data, int width, int height, int channel);
+	vec4 sample_texture(const VertexPositionInputs& vertex0, const VertexPositionInputs& vertex1, const VertexPositionInputs& vertex2, const vec3& bary_coord);
+	
 
 	//shading strategy
 	void flat_shading(const VertexPositionInputs& vertex0, const VertexPositionInputs& vertex1, const VertexPositionInputs& vertex2);

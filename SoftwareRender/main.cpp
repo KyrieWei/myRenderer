@@ -30,10 +30,13 @@ int main()
 
 	//cube
 	cube m_cube;
+	m_cube.loadTexture("assets/textures/container.jpg", TEXTURE_FILTER::REPEAT);
+
 
 	//plane
 	plane m_plane;
 	m_plane.loadTexture("assets/textures/floor.jpg", TEXTURE_FILTER::REPEAT);
+	//std::cout << static_cast<unsigned int>(m_plane.texture_data[0]) << " " << m_plane.texture_data[1] << " " << m_plane.texture_data[2] << std::endl;
 
 	//Load model
 	Model nier;
@@ -90,6 +93,9 @@ int main()
 		m_pipeline.setMVP(model, view, projection);
 		m_pipeline.setLight(sun);
 		m_pipeline.setCamera(cam.Position);
+
+		m_pipeline.bind_texture(m_cube.texture_data, m_cube.texture_width, m_cube.texture_height, m_cube.texture_channel);
+
 		m_pipeline.drawArrays(m_cube);
 
 		//draw plane
@@ -97,8 +103,10 @@ int main()
 		model = scale(model, vec3(6.0, 1, 6.0));
 		model = translate(model, vec3(0.0, -0.1, -10.0));
 
-		m_pipeline.setShadingMode(shading_mode::FLAT_SHADING);
+		m_pipeline.setShadingMode(shading_mode::GOURAUD_SHADING);
 		m_pipeline.setMVP(model, view, projection);
+
+		m_pipeline.bind_texture(m_plane.texture_data, m_plane.texture_width, m_plane.texture_height, m_plane.texture_channel);
 
 		m_pipeline.drawArrays(m_plane);
 

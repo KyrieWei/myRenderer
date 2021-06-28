@@ -24,5 +24,15 @@ public:
 		return vec2(x * t, y * t);
 	}
 
+	vec2 operator/(double t) const
+	{
+		return vec2(x / t, y / t);
+	}
+
+	friend vec2 operator*(double t,const vec2& v)
+	{
+		return v * t;
+	}
+
 };
 

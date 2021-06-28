@@ -4,6 +4,7 @@
 #include "../maths/vec3.h"
 #include <iostream>
 
+
 enum TEXTURE_FILTER
 {
 	REPEAT,
@@ -26,6 +27,7 @@ public:
 
 	unsigned char* texture_data;
 	TEXTURE_FILTER texture_filter;
+	int texture_width, texture_height, texture_channel;
 
 public:
 	Object() : vertex_num(0), face_num(0) {}

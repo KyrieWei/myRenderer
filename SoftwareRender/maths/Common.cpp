@@ -37,6 +37,11 @@ vec4 lerp(const vec4& left, const vec4& right, double t)
 	return res;
 }
 
+double clamp(double u, double min, double max)
+{
+	return u < min ? min : u > max ? max : u;
+}
+
 vec3 barycentirc_coord(const vec2& p0, const vec2& p1, const vec2& p2, const vec2& p)
 {
 	//p = (1 - u - v) * A + u * B + v * C

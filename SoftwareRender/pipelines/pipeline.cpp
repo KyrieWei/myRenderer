@@ -79,6 +79,10 @@ bool pipeline::triangle_clip(const VertexPositionInputs& vertex0, const VertexPo
 	return false;
 }
 
+void pipeline::depth_persp(const VertexPositionInputs& vertex0, const VertexPositionInputs& vertex1, const VertexPositionInputs& vertex2)
+{
+
+}
 
 void pipeline::depth_write(int i, int j, double depth)
 {
@@ -95,10 +99,36 @@ bool pipeline::depth_test(int i, int j, double depth)
 		return false;
 }
 
-void pipeline::sample_texture(const vec2& uv)
+void pipeline::bind_texture(unsigned char* data, int width, int height, int channel)
 {
-	
+	texture_data = data;
+	texture_width = width;
+	texture_height = height;
+	texture_channle = channel;
 }
+
+vec4 pipeline::sample_texture(const VertexPositionInputs& vertex0, const VertexPositionInputs& vertex1, const VertexPositionInputs& vertex2, const vec3& bary_coord)
+{
+	double z = 1.0 / (bary_coord.x / vertex0.positionVS.z + bary_coord.y / vertex1.positionVS.z + bary_coord.z / vertex2.positionVS.z);
+
+	vec2 uv = (vertex0.uv / vertex0.positionVS.z * bary_coord.x + vertex1.uv / vertex1.positionVS.z * bary_coord.y + vertex2.uv / vertex2.positionVS.z * bary_coord.z) * z;
+
+	uv.x = clamp(uv.x, 0.0, 1.0);
+	uv.y = clamp(uv.y, 0.0, 1.0);
+
+	int width = static_cast<int>(uv.x * texture_width);
+	int height = static_cast<int>(uv.y * texture_height);
+
+	int index = (texture_width * height + width) * texture_channle;
+	
+	double r = static_cast<unsigned int>(texture_data[index]) / 255.0;
+	double g = static_cast<unsigned int>(texture_data[index + 1]) / 255.0;
+	double b = static_cast<unsigned int>(texture_data[index + 2]) / 255.0;
+
+	return vec4(r, g, b, 1.0);
+}
+
+
 
 void pipeline::flat_shading(const VertexPositionInputs& vertex0, const VertexPositionInputs& vertex1, const VertexPositionInputs& vertex2)
 {
@@ -159,7 +189,7 @@ void pipeline::gouraud_shading(const VertexPositionInputs& vertex0, const Vertex
 			if (depth_test(j, k, depth))
 			{
 				depth_write(j, k, depth);
-				vec4 color = vec4(bary_coord.x * vertex0.texture + bary_coord.y * vertex1.texture + bary_coord.z * vertex2.texture, 1.0);
+				vec4 color = sample_texture(vertex0, vertex1, vertex2, bary_coord);
 				forwardBuffer.draw_pixel(j, k, color);
 			}
 		}
@@ -256,9 +286,12 @@ void pipeline::drawArrays(const Object& obj)
 		vertex1.positionOS = obj.vertex[obj.vertex_index[i][1] - 1];
 		vertex2.positionOS = obj.vertex[obj.vertex_index[i][2] - 1];
 
-		vertex0.uv = obj.tex_coord[obj.tex_coord_index[i][0] - 1];
-		vertex1.uv = obj.tex_coord[obj.tex_coord_index[i][1] - 1];
-		vertex2.uv = obj.tex_coord[obj.tex_coord_index[i][2] - 1];
+		if (!obj.tex_coord.empty())
+		{
+			vertex0.uv = obj.tex_coord[obj.tex_coord_index[i][0] - 1];
+			vertex1.uv = obj.tex_coord[obj.tex_coord_index[i][1] - 1];
+			vertex2.uv = obj.tex_coord[obj.tex_coord_index[i][2] - 1];
+		}
 
 		//vertex shader
 		compute_vertex_WVC(vertex0);
