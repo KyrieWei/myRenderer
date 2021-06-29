@@ -31,6 +31,5 @@ public:
 
 public:
 	Object() : vertex_num(0), face_num(0) {}
-
 };
 
