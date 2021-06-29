@@ -1,5 +1,6 @@
 #include <iostream>
 #include <ctime>
+#include <chrono>
 
 #include "pipelines/pipeline.h"
 #include "gameobjects/model.h"
@@ -11,14 +12,13 @@ const int WIDTH = 800;
 const int HEIGHT = 600;
 const int CHANNEL = 4;
 
-int rate = 4.0;
-double angle = 0.0;
-
 
 void handle_key_pressed(window_t* window);
 
+
 int main()
 {
+	std::chrono::time_point<std::chrono::system_clock> start, end;
 
 	//create window
 	callbacks_t callbacks;
@@ -63,10 +63,16 @@ int main()
 	camera cam(camera_pos, vec3(0.0, 1.0, 0.0));
 
 	double scale_factor = 1.0;
+	int rate = 4.0;
+	double angle = 0.0;
 
 	//send data to 
 	while (!window_should_close(window))
 	{
+
+		start = std::chrono::system_clock::now();
+
+		
 		m_pipeline.clean_color(bg_color);
 		m_pipeline.clean_depth();
 		m_pipeline.triangle_num_drawed = 0;
@@ -96,7 +102,7 @@ int main()
 
 		m_pipeline.bind_texture(m_cube.texture_data, m_cube.texture_width, m_cube.texture_height, m_cube.texture_channel);
 
-		m_pipeline.drawArrays(m_cube);
+		//m_pipeline.drawArrays(m_cube);
 
 		//draw plane
 		setIdentity(model);
@@ -108,12 +114,18 @@ int main()
 
 		m_pipeline.bind_texture(m_plane.texture_data, m_plane.texture_width, m_plane.texture_height, m_plane.texture_channel);
 
-		m_pipeline.drawArrays(m_plane);
+		//m_pipeline.drawArrays(m_plane);
+		
 
 		window_draw_image(window, &m_pipeline.forwardBuffer);
 		input_poll_events();
 
-		std::cerr << "\rtriangle numbers : " << m_pipeline.triangle_num_drawed << std::flush;
+		//m_pipeline.swapBuffer();
+
+		end = std::chrono::system_clock::now();
+		std::chrono::duration<double> elapsed_seconds = end - start;
+		//std::cout << elapsed_seconds.count() << std::endl;
+		std::cerr << "\rtriangle numbers: " << m_pipeline.triangle_num_drawed << " fps: " << static_cast<int>(1.0 / elapsed_seconds.count()) << std::flush;
 	}
 
 	window_destroy(window);

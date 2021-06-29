@@ -19,6 +19,5 @@ public:
 	void draw_line(const vec2& point0, const vec2& point1, const vec4& color);
 	void draw_filled_triangle(const vec2& point0, const vec2& point1, const vec2& point2, const vec4& color);
 	void write_to_image(const char* file_name);
-
 };
 

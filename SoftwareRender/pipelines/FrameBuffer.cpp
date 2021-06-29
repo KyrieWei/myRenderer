@@ -29,8 +29,10 @@ void FrameBuffer::draw_background(const vec4& color)
 	{
 		for (int j = 0; j < height; j++)
 		{
-			for (int k = 0; k < channel; k++)
-				image_buffer[index++] = static_cast<unsigned char>(color[k] * 255);
+			image_buffer[index++] = static_cast<unsigned char>(color[0] * 255);
+			image_buffer[index++] = static_cast<unsigned char>(color[1] * 255);
+			image_buffer[index++] = static_cast<unsigned char>(color[2] * 255);
+			image_buffer[index++] = static_cast<unsigned char>(color[3] * 255);
 		}
 	}
 }

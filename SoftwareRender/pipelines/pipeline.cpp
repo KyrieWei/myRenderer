@@ -331,6 +331,13 @@ void pipeline::clean_depth()
 
 }
 
+void pipeline::swapBuffer()
+{
+	FrameBuffer tmp = forwardBuffer;
+	forwardBuffer = backwardBuffer;
+	backwardBuffer = tmp;
+}
+
 void pipeline::render()
 {
 

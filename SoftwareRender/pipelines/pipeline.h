@@ -84,6 +84,7 @@ public:
 	void clean_color(const vec4& color);
 	void clean_depth();
 
+	void swapBuffer();
 
 	void render();
 };
