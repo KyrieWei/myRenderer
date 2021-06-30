@@ -276,7 +276,6 @@ void pipeline::drawArrays(vec3 data[], int data_length, int index[][3], int inde
 
 void pipeline::drawArrays(const Object& obj)
 {
-	triangle_num_drawed = 0;
 
 	for (int i = 0; i < obj.face_num; i++)
 	{
@@ -315,6 +314,50 @@ void pipeline::drawArrays(const Object& obj)
 		rasterization(vertex0, vertex1, vertex2);
 
 		triangle_num_drawed++;
+	}
+}
+
+void pipeline::drawArrays(const Model& mod)
+{
+	for (auto mesh : mod.models)
+	{
+		for (int i = 0; i < mesh.tri_num; i++)
+		{
+			VertexPositionInputs vertex0, vertex1, vertex2;
+
+			vertex0.positionOS = mesh.vertex[mesh.vertex_index[i][0] - 1];
+			vertex1.positionOS = mesh.vertex[mesh.vertex_index[i][1] - 1];
+			vertex2.positionOS = mesh.vertex[mesh.vertex_index[i][2] - 1];
+
+			if (!mesh.tex_coord.empty())
+			{
+				vertex0.uv = mesh.tex_coord[mesh.tex_coord_index[i][0] - 1];
+				vertex1.uv = mesh.tex_coord[mesh.tex_coord_index[i][1] - 1];
+				vertex2.uv = mesh.tex_coord[mesh.tex_coord_index[i][2] - 1];
+			}
+
+			//vertex shader
+			compute_vertex_WVC(vertex0);
+			compute_vertex_WVC(vertex1);
+			compute_vertex_WVC(vertex2);
+
+			//face culling
+			if (face_culling(vertex0, vertex1, vertex2))
+				continue;
+
+			//triangle clip
+			if (triangle_clip(vertex0, vertex1, vertex2))
+				continue;
+
+			compute_vertex_NS(vertex0);
+			compute_vertex_NS(vertex1);
+			compute_vertex_NS(vertex2);
+
+			//rasterization
+			rasterization(vertex0, vertex1, vertex2);
+
+			triangle_num_drawed++;
+		}
 	}
 }
 

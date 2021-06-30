@@ -141,6 +141,8 @@
   <ItemGroup>
     <ClCompile Include="components\camera.cpp" />
     <ClCompile Include="gameobjects\cube.cpp" />
+    <ClCompile Include="gameobjects\Material.cpp" />
+    <ClCompile Include="gameobjects\Mesh.cpp" />
     <ClCompile Include="gameobjects\Model.cpp" />
     <ClCompile Include="gameobjects\Object.cpp" />
     <ClCompile Include="gameobjects\plane.cpp" />
@@ -156,10 +158,13 @@
     <ClCompile Include="pipelines\Lighting.cpp" />
     <ClCompile Include="pipelines\pipeline.cpp" />
     <ClCompile Include="pipelines\vertexOut.cpp" />
+    <ClCompile Include="tools\LoadObj.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="components\camera.h" />
     <ClInclude Include="gameobjects\cube.h" />
+    <ClInclude Include="gameobjects\Material.h" />
+    <ClInclude Include="gameobjects\Mesh.h" />
     <ClInclude Include="gameobjects\Model.h" />
     <ClInclude Include="gameobjects\Object.h" />
     <ClInclude Include="gameobjects\plane.h" />
@@ -174,6 +179,7 @@
     <ClInclude Include="pipelines\Lighting.h" />
     <ClInclude Include="pipelines\pipeline.h" />
     <ClInclude Include="pipelines\vertexOut.h" />
+    <ClInclude Include="tools\LoadObj.h" />
     <ClInclude Include="tools\macro.h" />
     <ClInclude Include="tools\stb_image.h" />
     <ClInclude Include="tools\stb_image_write.h" />

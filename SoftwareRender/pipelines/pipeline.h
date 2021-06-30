@@ -79,7 +79,7 @@ public:
 	
 	void drawArrays(vec3 data[], int data_length, int index[][3], int index_length, vec3 data_color[]);
 	void drawArrays(const Object& obj);
-
+	void drawArrays(const Model& mod);
 
 	void clean_color(const vec4& color);
 	void clean_depth();

@@ -8,6 +8,8 @@
 #include "gameobjects/cube.h"
 #include "gameobjects/plane.h"
 
+#include "tools/LoadObj.h"
+
 const int WIDTH = 800;
 const int HEIGHT = 600;
 const int CHANNEL = 4;
@@ -35,15 +37,14 @@ int main()
 	//plane
 	plane m_plane;
 	m_plane.loadTexture("assets/textures/floor.jpg", TEXTURE_FILTER::REPEAT);
-	//std::cout << static_cast<unsigned int>(m_plane.texture_data[0]) << " " << m_plane.texture_data[1] << " " << m_plane.texture_data[2] << std::endl;
+
+	std::string test = "lighting 7:";
+	std::vector<std::string> split_line = split(test.substr(0, test.length()-1), ' ');
+	for (std::string elem : split_line)
+		std::cout << elem << std::endl;
 
 	//Load model
-	Model nier;
-	nier.load("assets/nier2b7.obj");
-
-	std::cout << nier.vertex_num << std::endl;
-	std::cout << nier.tex_num << std::endl;
-	std::cout << nier.face_num << std::endl;
+	Model nier("assets/nier2b/nier2b.scn");
 
 	pipeline m_pipeline(WIDTH, HEIGHT);
 
@@ -58,7 +59,7 @@ int main()
 	sun.color = vec3(1.0, 1.0, 1.0);
 
 	//camera
-	vec3 camera_pos = vec3(0.0, 8.0, 5.0);
+	vec3 camera_pos = vec3(0.0, 100.0, 350.0);
 	camera cam(camera_pos, vec3(0.0, 1.0, 0.0));
 
 	double scale_factor = 1.0;
@@ -81,16 +82,16 @@ int main()
 
 		//model matrix
 		mat4x4 model;
-		model = scale(model, vec3(1.0, 1.0, 1.0));
-		model = rotate(model, radians(angle), vec3(0.0, 1.0, 0.0));
-		model = translate(model, vec3(0.0, -0.0, -10.0));
+		//model = scale(model, vec3(1.0, 1.0, 1.0));
+		//model = rotate(model, radians(angle), vec3(0.0, 1.0, 0.0));
+		//model = translate(model, vec3(0.0, -0.0, -10.0));
 
 		//camera back 
 		mat4x4 view;
 		view = cam.GetViewMatrix();
 
 		//perspective projection
-		mat4x4 projection = perspective(radians(cam.zoom), (double)WIDTH / HEIGHT, 0.1, 100.0);
+		mat4x4 projection = perspective(radians(cam.zoom), (double)WIDTH / HEIGHT, 0.1, 1000.0);
 
 		//draw cube
 		//m_pipeline.setShadingMode(shading_mode::GOURAUD_SHADING);
@@ -114,6 +115,13 @@ int main()
 
 		//m_pipeline.drawArrays(m_plane);
 		
+		//draw nier model
+		m_pipeline.setShadingMode(shading_mode::FLAT_SHADING);
+		m_pipeline.setMVP(model, view, projection);
+		m_pipeline.setLight(sun);
+
+		m_pipeline.drawArrays(nier);
+
 
 		window_draw_image(window, &m_pipeline.forwardBuffer);
 		input_poll_events();

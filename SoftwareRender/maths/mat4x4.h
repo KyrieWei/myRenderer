@@ -29,6 +29,7 @@ public:
 	mat4x4 operator/(double t) const;
 
 	vec4 operator*(const vec4& v) const;
+	vec3 operator*(const vec3& v) const;
 
 	void print(const char* str);
 };

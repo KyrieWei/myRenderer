@@ -66,6 +66,15 @@
     <ClCompile Include="gameobjects\Model.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="gameobjects\Mesh.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\LoadObj.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="gameobjects\Material.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="maths\vec3.h">
@@ -123,6 +132,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="tools\stb_image.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="gameobjects\Mesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\LoadObj.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="gameobjects\Material.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

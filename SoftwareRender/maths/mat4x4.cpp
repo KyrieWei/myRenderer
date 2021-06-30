@@ -110,6 +110,13 @@ vec4 mat4x4::operator*(const vec4& v) const
 	return res;
 }
 
+vec3 mat4x4::operator*(const vec3& v) const
+{
+	vec4 res = *this * vec4(v, 1.0);
+
+	return res;
+}
+
 
 void mat4x4::print(const char* str)
 {
