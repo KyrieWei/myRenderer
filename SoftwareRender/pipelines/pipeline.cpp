@@ -194,7 +194,7 @@ void pipeline::gouraud_shading(const VertexPositionInputs& vertex0, const Vertex
 				vec4 color;
 				if (!texture_status)
 				{
-					color = baseColor;
+					color = current_material->baseColor;
 				}
 				else
 				{
@@ -333,6 +333,12 @@ void pipeline::drawArrays(const Model& mod)
 	for (auto mesh : mod.models)
 	{
 		//bind texture
+		current_material = &mod.materials[mesh.material_index];
+		if (current_material->diffuse_map == nullptr)
+			texture_status = false;
+		else
+			texture_status = true;
+
 		texture_data = mod.materials[mesh.material_index].diffuse_map;
 		texture_width = mod.materials[mesh.material_index].diffuse_map_width;
 		texture_height = mod.materials[mesh.material_index].diffuse_map_height;

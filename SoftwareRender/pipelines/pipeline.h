@@ -35,6 +35,8 @@ public:
 	double* depthBuffer;
 
 	unsigned char* texture_data;
+	const Material* current_material;
+
 	int texture_width, texture_height, texture_channle;
 
 	bool texture_status;
