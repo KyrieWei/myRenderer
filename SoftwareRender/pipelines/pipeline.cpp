@@ -116,8 +116,8 @@ vec4 pipeline::sample_texture(const VertexPositionInputs& vertex0, const VertexP
 	uv.x = clamp(uv.x, 0.0, 1.0);
 	uv.y = clamp(uv.y, 0.0, 1.0);
 
-	int width = static_cast<int>(uv.x * texture_width);
-	int height = static_cast<int>(uv.y * texture_height);
+	int width = static_cast<int>(uv.x * texture_width) % texture_width;
+	int height = static_cast<int>(uv.y * texture_height) % texture_height;
 
 	int index = (texture_width * height + width) * texture_channle;
 	
@@ -189,7 +189,18 @@ void pipeline::gouraud_shading(const VertexPositionInputs& vertex0, const Vertex
 			if (depth_test(j, k, depth))
 			{
 				depth_write(j, k, depth);
-				vec4 color = sample_texture(vertex0, vertex1, vertex2, bary_coord);
+				//use base color
+
+				vec4 color;
+				if (!texture_status)
+				{
+					color = baseColor;
+				}
+				else
+				{
+					color = sample_texture(vertex0, vertex1, vertex2, bary_coord);
+				}
+				
 				forwardBuffer.draw_pixel(j, k, color);
 			}
 		}
@@ -321,6 +332,12 @@ void pipeline::drawArrays(const Model& mod)
 {
 	for (auto mesh : mod.models)
 	{
+		//bind texture
+		texture_data = mod.materials[mesh.material_index].diffuse_map;
+		texture_width = mod.materials[mesh.material_index].diffuse_map_width;
+		texture_height = mod.materials[mesh.material_index].diffuse_map_height;
+		texture_channle = mod.materials[mesh.material_index].diffuse_map_channel;
+
 		for (int i = 0; i < mesh.tri_num; i++)
 		{
 			VertexPositionInputs vertex0, vertex1, vertex2;

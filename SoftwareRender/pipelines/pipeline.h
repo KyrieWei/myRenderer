@@ -37,6 +37,8 @@ public:
 	unsigned char* texture_data;
 	int texture_width, texture_height, texture_channle;
 
+	bool texture_status;
+
 	int triangle_num_drawed;
 
 public:

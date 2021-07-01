@@ -64,6 +64,13 @@ Model::Model(const char* str)
 						std::cout << "failed to load texture: " << split_line[1] << std::endl;
 					}
 				}
+				else
+				{
+					mat.diffuse_map = nullptr;
+					mat.diffuse_map_width = 0;
+					mat.diffuse_map_height = 0;
+					mat.diffuse_map_channel = 0;
+				}
 				//specular_map
 				std::getline(m_file, line);
 				split_line = split(line, ' ');
@@ -76,6 +83,13 @@ Model::Model(const char* str)
 						std::cout << "failed to load texture: " << split_line[1] << std::endl;
 					}
 				}
+				else
+				{
+					mat.specular_map = nullptr;
+					mat.specular_map_width = 0;
+					mat.specular_map_height = 0;
+					mat.specular_map_channel = 0;
+				}
 				//emission_map
 				std::getline(m_file, line);
 				split_line = split(line, ' ');
@@ -87,6 +101,13 @@ Model::Model(const char* str)
 					{
 						std::cout << "failed to load texture: " << split_line[1] << std::endl;
 					}
+				}
+				else
+				{
+					mat.emission_map = nullptr;
+					mat.emission_map_width = 0;
+					mat.emission_map_height = 0;
+					mat.emission_map_channel = 0;
 				}
 				//double_sided
 				std::getline(m_file, line);

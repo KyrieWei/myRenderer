@@ -116,7 +116,7 @@ int main()
 		//m_pipeline.drawArrays(m_plane);
 		
 		//draw nier model
-		m_pipeline.setShadingMode(shading_mode::FLAT_SHADING);
+		m_pipeline.setShadingMode(shading_mode::GOURAUD_SHADING);
 		m_pipeline.setMVP(model, view, projection);
 		m_pipeline.setLight(sun);
 
