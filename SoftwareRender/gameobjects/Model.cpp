@@ -213,6 +213,10 @@ Model::Model(const char* str)
 				for (auto &elem : mesh.vertex)
 					elem = transforms[trans_index] * elem;
 
+				//for (auto& elem : mesh.normal)
+				//	elem = transforms[trans_index] * elem;
+
+
 				models.push_back(mesh);
 			}
 

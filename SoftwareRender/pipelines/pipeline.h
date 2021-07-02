@@ -59,7 +59,8 @@ public:
 	void fragment_shader(VertexPositionInputs& vertex);
 
 	//face culling
-	bool face_culling(const VertexPositionInputs& vertex0, const VertexPositionInputs& vertex1, const VertexPositionInputs& vertex2);
+	bool face_culling_wo_normal(const VertexPositionInputs& vertex0, const VertexPositionInputs& vertex1, const VertexPositionInputs& vertex2);
+	bool face_culling_with_normal(const VertexPositionInputs& vertex0, const VertexPositionInputs& vertex1, const VertexPositionInputs& vertex2);
 
 	//triangle clip
 	bool triangle_clip(const VertexPositionInputs& vertex0, const VertexPositionInputs& vertex1, const VertexPositionInputs& vertex2);
@@ -71,7 +72,7 @@ public:
 
 	void bind_texture(unsigned char* texture_data, int width, int height, int channel);
 	vec4 sample_texture(const VertexPositionInputs& vertex0, const VertexPositionInputs& vertex1, const VertexPositionInputs& vertex2, const vec3& bary_coord);
-	
+	vec4 texture_repeat_sample(const vec2& texcoord);
 
 	//shading strategy
 	void flat_shading(const VertexPositionInputs& vertex0, const VertexPositionInputs& vertex1, const VertexPositionInputs& vertex2);

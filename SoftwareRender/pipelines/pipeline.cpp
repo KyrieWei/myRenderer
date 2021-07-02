@@ -38,6 +38,7 @@ void pipeline::compute_vertex_WVC(VertexPositionInputs& vertex)
 	vertex.positionVS = view * vec4(vertex.positionWS, 1.0);
 	vertex.positionCS = projection * vec4(vertex.positionVS, 1.0);
 
+	//vertex.normalWS = model * vec4(vertex.normalWS, 1.0);
 }
 
 void pipeline::compute_vertex_NS(VertexPositionInputs& vertex)
@@ -53,10 +54,21 @@ void pipeline::fragment_shader(VertexPositionInputs& vertex)
 	//TODO:compute lighting
 }
 
-bool pipeline::face_culling(const VertexPositionInputs& vertex0, const VertexPositionInputs& vertex1, const VertexPositionInputs& vertex2)
+bool pipeline::face_culling_wo_normal(const VertexPositionInputs& vertex0, const VertexPositionInputs& vertex1, const VertexPositionInputs& vertex2)
 {
 	vec3 view_dir = normalize(vertex0.positionWS - camera_pos);
 	vec3 normal = compute_flat_normal(vertex0, vertex1, vertex2);
+
+	if (dot(view_dir, normal) < 0.0)
+		return false;
+	else
+		return true;
+}
+
+bool pipeline::face_culling_with_normal(const VertexPositionInputs& vertex0, const VertexPositionInputs& vertex1, const VertexPositionInputs& vertex2)
+{
+	vec3 view_dir = normalize(vertex0.positionWS - camera_pos);
+	vec3 normal = normalize(vertex0.normalWS + vertex1.normalWS + vertex2.normalWS);
 
 	if (dot(view_dir, normal) < 0.0)
 		return false;
@@ -113,11 +125,15 @@ vec4 pipeline::sample_texture(const VertexPositionInputs& vertex0, const VertexP
 
 	vec2 uv = (vertex0.uv / vertex0.positionVS.z * bary_coord.x + vertex1.uv / vertex1.positionVS.z * bary_coord.y + vertex2.uv / vertex2.positionVS.z * bary_coord.z) * z;
 
-	uv.x = clamp(uv.x, 0.0, 1.0);
-	uv.y = clamp(uv.y, 0.0, 1.0);
+	uv.x = uv.x - (double)floor(uv.x);
+	uv.y = uv.y - (double)floor(uv.y);
 
-	int width = static_cast<int>(uv.x * texture_width) % texture_width;
-	int height = static_cast<int>(uv.y * texture_height) % texture_height;
+	uv.y = 1 - uv.y;
+	//uv.x = clamp(uv.x, 0.0, 1.0);
+	//uv.y = clamp(uv.y, 0.0, 1.0);
+
+	int width = static_cast<int>(uv.x * (texture_width - 1));
+	int height = static_cast<int>(uv.y * (texture_height - 1));
 
 	int index = (texture_width * height + width) * texture_channle;
 	
@@ -126,6 +142,27 @@ vec4 pipeline::sample_texture(const VertexPositionInputs& vertex0, const VertexP
 	double b = static_cast<unsigned int>(texture_data[index + 2]) / 255.0;
 
 	return vec4(r, g, b, 1.0);
+}
+
+vec4 pipeline::texture_repeat_sample(const vec2& texcoord)
+{
+	double v = texcoord.x - (double)floor(texcoord.x);
+	double u = texcoord.y - (double)floor(texcoord.y);
+
+	int col = (int)((texture_width - 1) * u);
+	int row = (int)((texture_height - 1) * v);
+
+	int index = (row * texture_width + col) * texture_channle;
+
+	double r = static_cast<unsigned int>(texture_data[index]) / 255.0;
+	double g = static_cast<unsigned int>(texture_data[index + 1]) / 255.0;
+	double b = static_cast<unsigned int>(texture_data[index + 2]) / 255.0;
+
+	double w = 1.0;
+	if (texture_channle == 4)
+		w = static_cast<unsigned int>(texture_data[index + 3]) / 255.0;
+
+	return vec4(r, g, b, w);
 }
 
 
@@ -189,8 +226,8 @@ void pipeline::gouraud_shading(const VertexPositionInputs& vertex0, const Vertex
 			if (depth_test(j, k, depth))
 			{
 				depth_write(j, k, depth);
+				
 				//use base color
-
 				vec4 color;
 				if (!texture_status)
 				{
@@ -265,7 +302,7 @@ void pipeline::drawArrays(vec3 data[], int data_length, int index[][3], int inde
 		compute_vertex_WVC(vertex2);
 
 		//face culling
-		if (face_culling(vertex0, vertex1, vertex2))
+		if (face_culling_wo_normal(vertex0, vertex1, vertex2))
 			continue;
 
 		//triangle clip
@@ -309,7 +346,7 @@ void pipeline::drawArrays(const Object& obj)
 		compute_vertex_WVC(vertex2);
 
 		//face culling
-		if (face_culling(vertex0, vertex1, vertex2))
+		if (face_culling_wo_normal(vertex0, vertex1, vertex2))
 			continue;
 
 		//triangle clip
@@ -330,8 +367,10 @@ void pipeline::drawArrays(const Object& obj)
 
 void pipeline::drawArrays(const Model& mod)
 {
-	for (auto mesh : mod.models)
+	//for (auto mesh : mod.models)
 	{
+		auto mesh = mod.models[7];
+		//std::cout << mesh.tri_num << std::endl;
 		//bind texture
 		current_material = &mod.materials[mesh.material_index];
 		if (current_material->diffuse_map == nullptr)
@@ -352,6 +391,10 @@ void pipeline::drawArrays(const Model& mod)
 			vertex1.positionOS = mesh.vertex[mesh.vertex_index[i][1] - 1];
 			vertex2.positionOS = mesh.vertex[mesh.vertex_index[i][2] - 1];
 
+			vertex0.normalWS = mesh.normal[mesh.normal_index[i][0] - 1];
+			vertex1.normalWS = mesh.normal[mesh.normal_index[i][1] - 1];
+			vertex2.normalWS = mesh.normal[mesh.normal_index[i][2] - 1];
+
 			if (!mesh.tex_coord.empty())
 			{
 				vertex0.uv = mesh.tex_coord[mesh.tex_coord_index[i][0] - 1];
@@ -365,8 +408,8 @@ void pipeline::drawArrays(const Model& mod)
 			compute_vertex_WVC(vertex2);
 
 			//face culling
-			if (face_culling(vertex0, vertex1, vertex2))
-				continue;
+			//if (face_culling_with_normal(vertex0, vertex1, vertex2))
+			//	continue;
 
 			//triangle clip
 			if (triangle_clip(vertex0, vertex1, vertex2))

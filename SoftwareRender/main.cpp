@@ -83,7 +83,7 @@ int main()
 		//model matrix
 		mat4x4 model;
 		//model = scale(model, vec3(1.0, 1.0, 1.0));
-		//model = rotate(model, radians(angle), vec3(0.0, 1.0, 0.0));
+		model = rotate(model, radians(angle), vec3(0.0, 1.0, 0.0));
 		//model = translate(model, vec3(0.0, -0.0, -10.0));
 
 		//camera back 
@@ -91,7 +91,7 @@ int main()
 		view = cam.GetViewMatrix();
 
 		//perspective projection
-		mat4x4 projection = perspective(radians(cam.zoom), (double)WIDTH / HEIGHT, 0.1, 1000.0);
+		mat4x4 projection = perspective(radians(cam.zoom), (double)WIDTH / HEIGHT, 0.1, 500.0);
 
 		//draw cube
 		//m_pipeline.setShadingMode(shading_mode::GOURAUD_SHADING);
@@ -130,8 +130,8 @@ int main()
 
 		end = std::chrono::system_clock::now();
 		std::chrono::duration<double> elapsed_seconds = end - start;
-		//std::cout << elapsed_seconds.count() << std::endl;
-		std::cerr << "\rtriangle numbers: " << m_pipeline.triangle_num_drawed << " fps: " << static_cast<int>(1.0 / elapsed_seconds.count()) << std::flush;
+		//std::cout << m_pipeline.triangle_num_drawed << std::endl;
+		//std::cerr << "\rtriangle numbers: " << m_pipeline.triangle_num_drawed << " fps: " << static_cast<int>(1.0 / elapsed_seconds.count()) << std::flush;
 	}
 
 	window_destroy(window);
